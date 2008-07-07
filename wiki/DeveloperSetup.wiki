@@ -5,8 +5,9 @@
 
 This will guide you through setting up Eclipse to edit files for the project.
 
-
-= Eclipse =
-
-Eclipse provides a great single interface for most of the aspects of this project. You will need to have a recent [http://java.sun.com JRE] (a JDK will also work) and a recent version of [http://www.eclipse.org Eclipse].
-
+= Eclipse 3.4/Ganymede =
+  * [http://java.sun.com Install a JDK or JRE] -- minimum required level is 5.0.
+  * Get [http://download.eclipse.org/eclipse/downloads/ Eclipse]
+  * Download the latest [http://download.eclipse.org/tools/pdt/downloads/ PDT 1.1 build] and unpack it.
+  * Start the Install Manager and add a local site
+  * Install the software
