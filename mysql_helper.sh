@@ -2,6 +2,7 @@
 
 #
 # Helper script to set up MySQL datasource
+# $Id$
 #
 
 ## Begin
