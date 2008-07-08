@@ -12,9 +12,15 @@
 		<div class="search">
 			<form action="{$callback}searchResults" method="post" id="search"> 
 				<input type="text" name="q" size="46" /><br/>
+				{if $search.CATALOG neq ""}
 				<input type="submit" value="Catalog" name="Catalog" />
+				{/if}
+				{if $search.WEBSITE neq ""}
 				<input type="submit" value="Website" clickrewriteid="results" clickrewriteurl="{$callback}searchResults" clickrewriteform="search" />
+				{/if}
+				{if $search.DATABASE neq ""}
 				<input type="submit" value="Databases" name="Databases" />
+				{/if}
 			</form>
 		</div>
 			

@@ -62,6 +62,7 @@ class FBAthenaeum {
 	 */
 	function displaySearchLibrary(){
 		$this->requireFacebook();
+		$this->tpl->assign('search', $GLOBALS['SEARCH']);
 		$this->tpl->assign('RSSFeed', $GLOBALS['FEED_URL']);
 		$this->tpl->display('SearchLibrary.tpl');
 	}
@@ -173,12 +174,12 @@ class FBAthenaeum {
 	function searchWebsite($formvars=null)
 	{
 		if(isset($formvars['Catalog']))
-			header("Location: ".$GLOBALS['CATALOG_SEARCH'].$formvars['q']);
+			header("Location: ".$GLOBALS['SEARCH']['CATALOG'].$formvars['q']);
 
 		if(isset($formvars['Databases']))
-			header("Location: ".$GLOBALS['DATABASE_SEARCH'].$formvars['q']);
+			header("Location: ".$GLOBALS['SEARCH']['DATABASE'].$formvars['q']);
 	
-		$xmlFile = implode("", file( $GLOBALS['WEBSITE_SEARCH'].$formvars['q']));
+		$xmlFile = implode("", file( $GLOBALS['SEARCH']['WEBSITE'].$formvars['q']));
 		$xml = new SimpleXMLElement($xmlFile);
 		
 		$i=0;

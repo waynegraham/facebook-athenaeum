@@ -53,11 +53,10 @@ $APP_DIR  = 'WHERE ON YOUR SERVER FB-ANTHENAEUM LIVES'; //Use only fully qualifi
 
 /**
  * Define some search strings, the search term will be placed at the end of it.
- * TODO: Make buttons on homepage dissapear if left blank
  */
 
 //The website search should return XML instead of a formatted page
-$WEBSITE_SEARCH = "YOUR SEARCH HERE";
+$SEARCH['WEBSITE'] = "";  // Put the URL of your website search here.
 
 /**
  * These should just redirect to the site you want the user to see when the user searches
@@ -65,8 +64,8 @@ $WEBSITE_SEARCH = "YOUR SEARCH HERE";
  * http://swem.wm.edu/process/search-processor.cfm?engine=catalog&q=
  * The search string will be appended to each query before redirecting the user to that page.
  */
-$DATABASE_SEARCH = "YOUR DATABASE SEARCH HERE";
-$CATALOG_SEARCH = "YOUR CATALOG SEARCH HERE";
+$SEARCH['DATABASE'] = "";  // Put the URL of your database search here. 
+$SEARCH['CATALOG'] = "";   // Put the URL of your catalog search here.
 
 
 /*
