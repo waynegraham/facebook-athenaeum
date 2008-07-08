@@ -14,6 +14,14 @@ tar zxvf facebook_athenaeum.tar.gz
 
 The only other change you need to make is to point the [FacebookSetup Callback URL in the Facebook Application] to the URL for the space you just created.
 
+Because this application uses Smarty (which writes to the cache and compile folders), you will need to change the ownership of those two files to be owned by the webserver so it can write the files. 
+
+{{{
+$> cd WHERE_YOU_PUT_ATHENAEUM_FILES
+$> chown WEBSERVER cache
+$> chown WEBSERVER compile 
+}}}
+
 == Other Software ==
   * Install [SmartySetup Smarty]
   * Install [DbSetup DB]
