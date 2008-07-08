@@ -1,0 +1,19 @@
+#summary Guides you through setting up your server-side environment.
+#labels PHP,Setup
+
+= Server Setup =
+Currently the Facebook Athenaeum codebase only works with PHP5 and uses the Smarty templating engine and PEAR DB library. While not required, the application also uses Apache's mod_rewrite to make "pretty" URLs. 
+
+The web server setup is relatively easy. You simply download the latest snapshot and expand it to you desired location. 
+
+{{{
+cd /var/www/htdocs
+wget 
+tar zxvf facebook_athenaeum.tar.gz
+}}}
+
+The only other change you need to make is to point the [FacebookSetup Callback URL in the Facebook Application] to the URL for the space you just created.
+
+== Other Software ==
+  * Install [SmartySetup Smarty]
+  * Install [DbSetup DB]
