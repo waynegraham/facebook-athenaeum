@@ -1,0 +1,6 @@
+<IfModule mod_rewrite.c>
+  RewriteEngine	On
+
+  RewriteRule ^([A-Za-z0-9-]+)/?/f([0-9A-Za-z]*)$ index.php?action=$1&f=$2 [L]
+  RewriteRule ^([A-Za-z0-9-]+)/?$ index.php?action=$1 [QSA]
+</IfModule>
