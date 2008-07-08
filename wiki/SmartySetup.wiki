@@ -1,5 +1,5 @@
 #summary Set up the Smarty template engine.
-#labels PHP,Smarty
+#labels PHP,Smarty,Setup
 
 = Setting Up Smarty =
 
