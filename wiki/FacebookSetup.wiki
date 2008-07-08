@@ -1,0 +1,24 @@
+#summary How to set up a new Facebook Application.
+#labels Facebook,Setup
+
+= Facebook =
+
+The first step in setting up Facebook Athenaeum is to tell Facebook about your project and get a key. This process takes about 5 minutes if you already have an account on Facebook.
+
+
+= Details =
+  # Add the [http://www.facebook.com/developers Facebook Developer application]. Once this application is added, it'll appear on the left-hand navigation. 
+  # Click on the button "+ Set Up New Application" in the upper-right
+  # Give your application a name. Remember, you can't have the word 'face' anywhere in the application name (the original application was named SwemTools). Check the box after you  You can ignore the Optional Fields for now. Click Submit to create your API Key and secret.
+  # You'll need your API Key and Secret for configs (in the configs/config.inc.php file)
+
+== Optional Fields ==
+The optional fields contain a lot of different information for you to customize your application. We'll go through some of the important ones.
+
+  * Callback URL: This is the URL on your server where the application lives (e.g. http://library.myuniversity.edu/facebook/)
+  * Canvas Page URL: The application URL for your application. This is the URL people will use to access the application
+  * Icon: Change the default icon used for your application
+  * Logo: Add a logo for you application
+
+
+
