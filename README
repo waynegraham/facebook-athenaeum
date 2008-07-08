@@ -1,0 +1,7 @@
+Required Packages
+
+- Smarty
+- XML_RSS
+
+pear install --onlyreqdeps Smarty
+pear install --onlyreqdeps XML_RSS
