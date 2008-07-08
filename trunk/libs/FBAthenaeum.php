@@ -32,6 +32,7 @@ class FBAthenaeum {
 		$this->tpl->assign('tabsMenu', $GLOBALS['facebook_tabs']);
 		$this->tpl->assign('app_name', $GLOBALS['APP_NAME']);
 		$this->tpl->assign('callback', $GLOBALS['facebook_config']['callback_url']);
+		$this->tpl->assign('uacct', $GLOBALS['GOOGLE_ANALYTICS_KEY']);
 	}
 	
 	/*
