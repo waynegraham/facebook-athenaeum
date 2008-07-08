@@ -7,9 +7,10 @@ The first step in setting up Facebook Athenaeum is to tell Facebook about your p
 
 
 = Details =
-  # Add the [http://www.facebook.com/developers Facebook Developer application]. Once this application is added, it'll appear on the left-hand navigation. 
+  # Add the [http://www.facebook.com/developers Facebook Developer application]. Once this application is added, it'll appear on the left-hand navigation. After adding the application, you have access to the Developer Application on the left-hand side of the screen. Depending on how many apps you have installed, it may be under "more".
+  # Open the Developer Application (if you don't already have that screen up)
   # Click on the button "+ Set Up New Application" in the upper-right
-  # Give your application a name. Remember, you can't have the word 'face' anywhere in the application name (the original application was named SwemTools). Check the box after you  You can ignore the Optional Fields for now. Click Submit to create your API Key and secret.
+  # Give your application a name. Remember, you can't have the word 'face' anywhere in the application name (the original application was named SwemTools). Check the box after you.  You can ignore the Optional Fields for now. Click Submit to create your API Key and secret.
   # You'll need your API Key and Secret for configs (in the configs/config.inc.php file)
 
 == Optional Fields ==
@@ -19,4 +20,3 @@ The optional fields contain a lot of different information for you to customize 
   * Canvas Page URL: The application URL for your application. This is the URL people will use to access the application
   * Icon: Change the default icon used for your application
   * Logo: Add a logo for you application
-
