@@ -8,8 +8,8 @@ The web server setup is relatively easy. You simply download the latest snapshot
 
 {{{
 cd /var/www/htdocs
-wget 
-tar zxvf facebook_athenaeum.tar.gz
+wget http://facebook-athenaeum.googlecode.com/files/facebook-0.1.tar.gz
+tar -zxvf facebook-0.1.tar.gz
 }}}
 
 The only other change you need to make is to point the [FacebookSetup Callback URL in the Facebook Application] to the URL for the space you just created.
