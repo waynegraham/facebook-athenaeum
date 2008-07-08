@@ -1,3 +1,6 @@
+/**
+$Id$
+*/
 CREATE TABLE `locations`(
 	`uid` bigint(20) NOT NULL,
 	`x` int(11) NOT NULL,
