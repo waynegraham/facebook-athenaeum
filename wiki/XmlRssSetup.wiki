@@ -3,7 +3,7 @@
 
 = Introduction =
 
-Adding the PEAR XML_RSS library to your PHP include directory is relatively easy with PEAR. If you're not using the smarty_helper.sh script, you can manually add this with the following:
+Adding the PEAR XML_RSS library to your PHP include directory is relatively easy with PEAR. If you're not using the {{{smarty_helper.sh}}} script, you can manually add this with the following:
 
 {{{
 $> pear upgrade pear
