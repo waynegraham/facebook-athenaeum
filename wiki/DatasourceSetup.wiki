@@ -1,0 +1,29 @@
+#summary Set up and configure a datasource.
+#labels Datasource,SQL,MySQL
+
+= Introduction =
+
+The application uses a simple table structure that is easily ported to any relational database system that is supported by the DB package (including MySQL, MSSQL, Oracle, SQLite, Sybase, and PostgreSQL). While the included SQL script is for MySQL, you can easily recreate this table in any other language. In the future we will be adding support for Facebook DataStore API so you will have the option to use Facebook to store this data.
+
+In the libs folder of the application, there is an SQL script to create a table for your application. We've included a helper script for MySQL (mysql_helper.sh) to assist you in creating the datasource and setting up a user for the database. You will need to remember this information to add in the configs/config.inc.php file.
+
+{{{
+$> cd PATH_TO_APPLICATION
+$> ./mysql_helper.sh
+}}}
+
+This script will prompt you for a database name, a database user for the database, a password for the user, then for an account that is authorized to create the datasource.
+
+== Table Structure ==
+The following is an ANSI-SQL script that _should_ work on most RDBMS systems:
+
+{{{
+CREATE TABLES locations(
+    uid INT PRIMARY KEY NONCLUSTERED,
+    x INT NOT NULL,
+    y INT NOT NULL,
+    floor INT NOT NULL,
+    updated DATETIME NOT NULL
+)
+GO
+}}}
