@@ -1,6 +1,6 @@
 <?php
 /**
- * Project:
+ * Project: Facebook Athenaeum
  * Date: $Date$
  * File: sql.lib.php
  * Version: $Id$

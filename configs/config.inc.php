@@ -1,7 +1,7 @@
 <?php
 /**
  * Global configurations for Facebook Athenaeum
- * 
+ * $Id$
  */
 
 /**
