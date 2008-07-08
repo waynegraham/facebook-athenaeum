@@ -108,12 +108,17 @@ $LOCATION_VALID_TIME = 24;
 
 define('FBTOOLS_DIR', $APP_DIR);
 
+/**
+ * Get from http://www.google.com/analytics
+ * defined on the line 
+ *     var pageTracker = _gat._getTracker("UA-nnnnnnn-n");
+ */
+$GOOGLE_ANALYTICS_KEY = 'UA-nnnnnnn-n';
+
 /*
  * In production set this to 0 rather than 1 to supress any possible PHP errors
  */
-ini_set('display_errors', 1);
-
-
-error_reporting(E_ALL);
+//ini_set('display_errors', 1);
+//error_reporting(E_ALL);
 
 ?>
