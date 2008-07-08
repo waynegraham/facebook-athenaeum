@@ -16,5 +16,5 @@ Ok, if you're paying attention, I also added the DB pear library in there, but y
 
 = Resources =
 
-  * [http://pear.php.net/package/XML_RSS DB Package Information]
+  * [http://pear.php.net/package/XML_RSS XML_RSS Package Information]
   * [http://pear.php.net PEAR]
