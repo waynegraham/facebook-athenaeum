@@ -26,7 +26,7 @@
 			
 		<div id="results">
 			<div id="resultLeft">
-				<h3>Swem Top News:</h3>
+				<h3>News:</h3>
 				{rss file=$RSSFeed}
 					<a href="{$rss_item.link}" target=_blank> {$rss_item.title} </a><br />
 				{/rss}
