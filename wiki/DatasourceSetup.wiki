@@ -27,3 +27,8 @@ CREATE TABLES locations(
 )
 GO
 }}}
+
+= Other Pages =
+  * [ServerSetup Set up web server]
+  * [SmartySetup Set up Smarty]
+  * [LocaterSetup Set up Locater]
