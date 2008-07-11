@@ -16,7 +16,7 @@ The first section of the config file are settings for Facebook:
   * {{{$facebook_config['api_key'] = 'YOUR_API_KEY_HERE';}}}: The API Key you got from Facebook when you set up the application
   * {{{$facebook_config['secret'] = 'YOUR SECRET HERE';}}}: The Secret you got from Facebook when you set up the application
   * {{{$facebook_config['callback_url'] = 'YOUR CALLBACK URL HERE';}}}: The server URL of where you application lives (e.g. http://www.myuniversity.edu/facebook).
-  * {{{$facebook_config['canvas_url_end'] = 'EVERYTHING AFTER http://apps.facebook.com HERE';}}} The URL you assigned in Facebook (without the Facebook URI). For example, http://apps.facebook.com/swemtools would be 'swemtools'
+  * {{{$facebook_config['canvas_url_end'] = 'EVERYTHING AFTER http://apps.facebook.com HERE';}}} The URL you assigned in Facebook (without the Facebook URI). For example, http://apps.facebook.com/swemtools would be 'swemtools' (*this needs to be in lower case*).
 
 
 === Tabs ===
