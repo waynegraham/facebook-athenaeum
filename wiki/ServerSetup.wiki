@@ -25,3 +25,4 @@ $> chown WEBSERVER compile
 == Other Software ==
   * Install [SmartySetup Smarty]
   * Install [DbSetup DB]
+  * Set up [DatasourceSetup Datasource]
