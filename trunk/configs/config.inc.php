@@ -71,26 +71,33 @@ $SEARCH['CATALOG'] = "";   // Put the URL of your catalog search here.
 /*
  * Set each floor's map location and what each floor is called.
  * An example from Swem is included below.
+ * The message is what is what will be displayed on the users profile page
+ * when that component is finished being developed.
  */
 
 $Floor_Map = array(
 	array(
 		'name' => 'Ground Floor',
-		'map' => 'http://swem.wm.edu/images/floor-plans/0.gif'
+		'map' => 'http://swem.wm.edu/images/floor-plans/0.gif',
+		'message' => "I'm currently on the ground floor of Swem."
 	),
 	array(
 		'name' => 'First Floor',
-		'map' => 'http://swem.wm.edu/images/floor-plans/1.gif'
+		'map' => 'http://swem.wm.edu/images/floor-plans/1.gif',
+		'message' => "I'm currently on the first floor of Swem."
 	),
 	array(
 		'name' => 'Second Floor',
-		'map' => 'http://swem.wm.edu/images/floor-plans/2.gif'	
+		'map' => 'http://swem.wm.edu/images/floor-plans/2.gif',	
+		'message' => "I'm currently on the second floor of Swem."
 	),
 	array(
 		'name' => 'Third Floor',
-		'map' => 'http://swem.wm.edu/images/floor-plans/3.gif'	
+		'map' => 'http://swem.wm.edu/images/floor-plans/3.gif',
+		'message' => "I'm currently on the third floor of Swem."
 	)
 	);
+
 
 /*
  * Set the floor that the Friend Locator defaults to when there is no floor specified by the user.

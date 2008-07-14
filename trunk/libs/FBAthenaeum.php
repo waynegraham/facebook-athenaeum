@@ -28,6 +28,7 @@ class FBAthenaeum {
 		$this->uid = $this->facebook->require_login();
 		$this->facebook->require_frame();
 		$this->tpl->assign('uid', $this->uid);
+		$this->tpl->assign('uacct', $GLOBALS['GOOGLE_ANALYTICS_KEY']);
 		$this->tpl->assign('canvas', $GLOBALS['facebook_config']['canvas_url_end']);
 		$this->tpl->assign('tabsMenu', $GLOBALS['facebook_tabs']);
 		$this->tpl->assign('app_name', $GLOBALS['APP_NAME']);
