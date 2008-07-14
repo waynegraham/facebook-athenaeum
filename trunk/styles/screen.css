@@ -18,6 +18,9 @@ $Id$
 #results {
 	text-align: left;
 	width: 100%;
+	position: relative;
+	padding-top: 10px;
+	padding-bottom: 20px; 
 }
 
 #resultLeft {
@@ -46,3 +49,27 @@ img.hidden {
 #mapImage {
 	z-index: -100;
 }
+
+#bottom {
+	margin-top: 5px;
+	min-height: 45px;
+}
+
+#clearLocation {
+	float: right;
+}
+
+#clearLocation img{
+	float: left;
+	top: -3px;
+	margin: -3px 5px 0px 5px;
+}
+
+#banner {
+	float: left;
+}
+
+#banner img{
+	margin: -3px 5px 0px 5px;
+	float: left;
+}	}

@@ -32,7 +32,6 @@ class FBAthenaeum {
 		$this->tpl->assign('tabsMenu', $GLOBALS['facebook_tabs']);
 		$this->tpl->assign('app_name', $GLOBALS['APP_NAME']);
 		$this->tpl->assign('callback', $GLOBALS['facebook_config']['callback_url']);
-		$this->tpl->assign('uacct', $GLOBALS['GOOGLE_ANALYTICS_KEY']);
 	}
 	
 	/*
@@ -85,18 +84,20 @@ class FBAthenaeum {
 	 * @return unknown
 	 */
 	function getLocations($friends = array(), $floor){
-		$query_string = "SELECT uid, x, y FROM locations WHERE floor=".$floor." AND NOT uid=".$this->uid." AND (1=1";
-		foreach($friends as $friend)
-		{
-			$query_string .= " OR uid=".$friend;
+		$query_string = "SELECT uid, x, y FROM locations WHERE floor=".$floor." AND (1=1";
+		if($friends != ""){
+			foreach($friends as $friend)
+			{
+				$query_string .= " OR uid=".$friend;
+			}
 		}
-		$query_string .= ") AND updated >= (DATE_ADD(NOW(), INTERVAL -".$GLOBALS['LOCATION_VALID_TIME']." HOUR));";		
-
+		$query_string .= ") AND updated >= (DATE_ADD(NOW(), INTERVAL -".$GLOBALS['LOCATION_VALID_TIME']." HOUR)) AND NOT uid=".$this->uid.";";		
+		
 		$this->sql->query(
 			$query_string,
 			SQL_ALL,
 			SQL_ASSOC
-		);
+		) or die(mysql_error());
 		
 		return $this->sql->record;
 	}
@@ -116,6 +117,14 @@ class FBAthenaeum {
 			(int)$formvars['floor'],
 			(int)$formvars['fb_sig_user']
 		);
+		
+		if($formvars['oldfloor'] != $formvars['floor'])
+		{
+			$FBML = "<fb:subtitle>My Location</fb:subtitle>";
+			$FBML .= $GLOBALS['Floor_Map'][$formvars['floor']]['message'];
+			$this->facebook->api_client->profile_setFBML(null, $this->facebook->user, null, $FBML, $FBML, $FBML);
+			
+		}
 		
 		return $this->sql->query($_query);
 	}
@@ -138,11 +147,17 @@ class FBAthenaeum {
 			$floor = $GLOBALS['DEFAULT_FLOOR'];
 		else
 			$floor = $floor['f'];
-		$this->tpl->assign('myLoc', $this->getMyLocation());
+			
+		$currentLoc = $this->getMyLocation();
+		if(!isset($currentLoc['floor']))
+			$currentLoc['floor'] = -1;
+		
+		$this->tpl->assign('myLoc', $currentLoc);
 		$this->tpl->assign('floor', $floor);
 		$this->tpl->assign('maps', $GLOBALS['Floor_Map']);
 		$this->requireFacebook();
 		$this->tpl->assign('friend', $this->getLocations($this->facebook->api_client->friends_getAppUsers(), $floor));
+		$this->tpl->assign('resetTime', $GLOBALS['LOCATION_VALID_TIME']);
 		$this->tpl->display('FriendLocator.tpl');
 	}
 	

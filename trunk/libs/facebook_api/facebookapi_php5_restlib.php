@@ -625,21 +625,23 @@ function toggleDisplay(id, type) {
     return $this->call_method('facebook.users.isAppAdded', array('uid' => $uid));
   }
 
-  /**
+ /**
    * Sets the FBML for the profile of the user attached to this session
    * @param   string   $markup           The FBML that describes the profile presence of this app for the user
    * @param   int      $uid              The user
    * @param   string   $profile          Profile FBML
-   * @param   string   $profile_action   Profile action FBML
+   * @param   string   $profile_action   Profile action FBML (deprecated)
    * @param   string   $mobile_profile   Mobile profile FBML
+   * @param   string   $profile_main     Main Tab profile FBML
    * @return  array    A list of strings describing any compile errors for the submitted FBML
    */
-  function profile_setFBML($markup, $uid = null, $profile='', $profile_action='', $mobile_profile='') {
+  function profile_setFBML($markup, $uid = null, $profile='', $profile_action='', $mobile_profile='', $profile_main='') {
     return $this->call_method('facebook.profile.setFBML', array('markup' => $markup,
                                                                 'uid' => $uid,
                                                                 'profile' => $profile,
                                                                 'profile_action' => $profile_action,
-                                                                'mobile_profile' => $mobile_profile));
+                                                                'mobile_profile' => $mobile_profile,
+                                                                'profile_main' => $profile_main));
   }
 
   public function &profile_getFBML($uid) {
