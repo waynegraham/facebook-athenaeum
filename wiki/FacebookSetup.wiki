@@ -16,7 +16,7 @@ The first step in setting up Facebook Athenaeum is to tell Facebook about your p
 == Optional Fields ==
 The optional fields contain a lot of different information for you to customize your application. We'll go through some of the important ones.
 
-  * Callback URL: This is the URL on your server where the application lives (e.g. http://library.myuniversity.edu/facebook/)
+  * Callback URL: This is the URL on your server where the application lives (e.g. http://library.myuniversity.edu/facebook/ - The trailing slash is very important, without it you may some errors returned by your application.)
   * Canvas Page URL: The application URL for your application. This is the URL people will use to access the application
   * Icon: Change the default icon used for your application
   * Logo: Add a logo for you application
