@@ -85,7 +85,7 @@ class FBAthenaeum {
 	 * @return unknown
 	 */
 	function getLocations($friends = array(), $floor){
-		$query_string = "SELECT uid, x, y FROM locations WHERE floor=".$floor." AND (1=1";
+		$query_string = "SELECT uid, x, y FROM locations WHERE floor=".$floor." AND (1=0";
 		if($friends != ""){
 			foreach($friends as $friend)
 			{
@@ -98,7 +98,7 @@ class FBAthenaeum {
 			$query_string,
 			SQL_ALL,
 			SQL_ASSOC
-		) or die(mysql_error());
+		);
 		
 		return $this->sql->record;
 	}
