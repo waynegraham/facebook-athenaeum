@@ -39,10 +39,10 @@ $facebook_tabs = array(
  * DSN Settings
  */
 $dsn_config['type'] 	= 'mysql';
-$dsn_config['host'] 	= 'MYSQL HOST';
-$dsn_config['username'] = 'MYSQL USER';
-$dsn_config['password'] = 'MYSQL PASSWORD';
-$dsn_config['database'] = 'fbanthenaeum';
+$dsn_config['host'] 	= 'MYSQL_HOST';
+$dsn_config['username'] = 'MYSQL_USER';
+$dsn_config['password'] = 'MYSQL_PASSWORD';
+$dsn_config['database'] = 'fbathenaeum';
 
 /**
  * Facebook Athenaeum customizations
