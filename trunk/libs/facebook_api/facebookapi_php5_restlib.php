@@ -1,5 +1,4 @@
 <?php
-// Copyright 2004-2008 Facebook. All Rights Reserved.
 //
 // +---------------------------------------------------------------------------+
 // | Facebook Platform PHP5 client                                             |
@@ -32,6 +31,7 @@
 // +---------------------------------------------------------------------------+
 //
 
+include_once 'jsonwrapper/jsonwrapper.php';
 class FacebookRestClient {
   public $secret;
   public $session_key;
@@ -60,7 +60,7 @@ class FacebookRestClient {
     $this->batch_mode = FacebookRestClient::BATCH_MODE_DEFAULT;
     $this->last_call_id = 0;
     $this->call_as_apikey = '';
-    $this->server_addr  = Facebook::get_facebook_url('api') . '/restserver.php';
+      $this->server_addr  = Facebook::get_facebook_url('api') . '/restserver.php';
     if (!empty($GLOBALS['facebook_config']['debug'])) {
       $this->cur_id = 0;
       ?>
@@ -326,6 +326,53 @@ function toggleDisplay(id, type) {
             'image_4_link' => $image_4_link,
             'target_ids' => $target_ids,
             'page_actor_id' => $page_actor_id));
+  }
+
+  public function &feed_registerTemplateBundle($one_line_story_templates,
+                                               $short_story_templates = array(),
+                                               $full_story_template = null)
+  {
+    $one_line_story_templates = json_encode($one_line_story_templates);
+
+    if (!empty($short_story_templates)) {
+      $short_story_templates = json_encode($short_story_templates);
+    }
+
+    if (isset($full_story_template)) {
+      $full_story_template = json_encode($full_story_template);
+    }
+
+    return $this->call_method('facebook.feed.registerTemplateBundle',
+                              array('one_line_story_templates' => $one_line_story_templates,
+                                    'short_story_templates' => $short_story_templates,
+                                    'full_story_template' => $full_story_template));
+  }
+
+  public function &feed_getRegisteredTemplateBundles()
+  {
+    return $this->call_method('facebook.feed.getRegisteredTemplateBundles', array());
+  }
+
+  public function &feed_getRegisteredTemplateBundleByID($template_bundle_id)
+  {
+    return $this->call_method('facebook.feed.getRegisteredTemplateBundleByID',
+                              array('template_bundle_id' => $template_bundle_id));
+  }
+
+  public function &feed_deactivateTemplateBundleByID($template_bundle_id)
+  {
+    return $this->call_method('facebook.feed.deactivateTemplateBundleByID',
+                              array('template_bundle_id' => $template_bundle_id));
+  }
+
+  public function &feed_publishUserAction($template_bundle_id, $template_data,
+                                          $target_ids=array(), $body_general='')
+  {
+    return $this->call_method('facebook.feed.publishUserAction',
+                              array('template_bundle_id' => $template_bundle_id,
+                                    'template_data' => $template_data,
+                                    'target_ids' => $target_ids,
+                                    'body_general' => $body_general));
   }
 
   /**
@@ -625,7 +672,7 @@ function toggleDisplay(id, type) {
     return $this->call_method('facebook.users.isAppAdded', array('uid' => $uid));
   }
 
- /**
+  /**
    * Sets the FBML for the profile of the user attached to this session
    * @param   string   $markup           The FBML that describes the profile presence of this app for the user
    * @param   int      $uid              The user
@@ -644,9 +691,46 @@ function toggleDisplay(id, type) {
                                                                 'profile_main' => $profile_main));
   }
 
-  public function &profile_getFBML($uid) {
-    return $this->call_method('facebook.profile.getFBML', array('uid' => $uid));
+  public function &profile_getFBML($uid, $type=null) {
+    return $this->call_method('facebook.profile.getFBML', array('uid' => $uid,
+                                                                'type' => $type));
   }
+
+  public function &profile_getInfo($uid=null) {
+    return $this->call_method('facebook.profile.getInfo', array('uid' => $uid));
+  }
+
+  public function &profile_getInfoOptions($field) {
+    return $this->call_method('facebook.profile.getInfoOptions',
+                              array('field' => $field));
+  }
+
+  public function profile_setInfoOptions($options, $field) {
+    return $this->call_method('facebook.profile.setInfoOptions',
+                              array('options' => json_encode($options),
+                                    'field'   => $field));
+  }
+
+  public function &profile_setInfo($title, $type, $info_fields, $uid=null) {
+    return $this->call_method('facebook.profile.setInfo',
+                              array('uid' => $uid,
+                                    'type' => $type,
+                                    'title'   => $title,
+                                    'info_fields' => json_encode($info_fields)));
+  }
+
+  public function &profile_addInfoItems($info_items, $uid=null) {
+    return $this->call_method('facebook.profile.addInfoItems',
+                              array('uid' => $uid,
+                                    'info_items' => json_encode($info_items)));
+  }
+
+  public function &profile_removeInfoItems($info_labels, $uid=null) {
+    return $this->call_method('facebook.profile.removeInfoItems',
+                              array('uid' => $uid,
+                                    'info_labels' => json_encode($info_labels)));
+  }
+
 
   public function &fbml_refreshImgSrc($url) {
     return $this->call_method('facebook.fbml.refreshImgSrc', array('url' => $url));
@@ -1627,8 +1711,8 @@ function toggleDisplay(id, type) {
    */
   public function &admin_getMetrics($start_time, $end_time, $period, $metrics) {
     return $this->call_method('admin.getMetrics',
-                              array('start_time' => $start_time,
-                                    'end_time' => $end_time,
+                              array('start_date' => $start_time,
+                                    'end_date' => $end_time,
                                     'period' => $period,
                                     'metrics' => json_encode($metrics)));
   }

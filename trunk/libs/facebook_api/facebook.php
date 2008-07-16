@@ -2,7 +2,7 @@
 // Copyright 2004-2008 Facebook. All Rights Reserved.
 //
 // +---------------------------------------------------------------------------+
-// | Facebook Platform PHP5 client                                             |
+// | Facebook Platform PHP5 client                                 |
 // +---------------------------------------------------------------------------+
 // | Copyright (c) 2007 Facebook, Inc.                                         |
 // | All rights reserved.                                                      |
@@ -31,13 +31,12 @@
 // | For help with this library, contact developers-help@facebook.com          |
 // +---------------------------------------------------------------------------+
 //
-
 include_once 'facebookapi_php5_restlib.php';
 
 define('FACEBOOK_API_VALIDATION_ERROR', 1);
 class Facebook {
   public $api_client;
-  
+
   public $api_key;
   public $secret;
   public $generate_session_secret;
@@ -45,7 +44,7 @@ class Facebook {
 
   public $fb_params;
   public $user;
-
+  public $profile_user;
   public function __construct($api_key, $secret, $generate_session_secret=false) {
     $this->api_key                 = $api_key;
     $this->secret                  = $secret;
@@ -75,7 +74,14 @@ class Facebook {
       // Note that we should *not* use our cookies in this scenario, since they may be referring to
       // the wrong user.
       $user        = isset($this->fb_params['user'])        ? $this->fb_params['user'] : null;
-      $session_key = isset($this->fb_params['session_key']) ? $this->fb_params['session_key'] : null;
+      $this->profile_user        = isset($this->fb_params['profile_user'])        ? $this->fb_params['profile_user'] : null;
+      if (isset($this->fb_params['session_key'])) {
+        $session_key =  $this->fb_params['session_key'];
+      } else if (isset($this->fb_params['profile_session_key'])) {
+        $session_key =  $this->fb_params['profile_session_key'];
+      } else {
+        $session_key = null;
+      }
       $expires     = isset($this->fb_params['expires'])     ? $this->fb_params['expires'] : null;
       $this->set_user($user, $session_key, $expires);
     } else if (!empty($_COOKIE) && $cookies = $this->get_valid_fb_params($_COOKIE, null, $this->api_key)) {
@@ -152,7 +158,7 @@ class Facebook {
       // get a frame within a frame.
       echo "<script type=\"text/javascript\">\ntop.location.href = \"$url\";\n</script>";
     } else {
-      header('Location: ' . $url);
+      header('Location', $url);
     }
     exit;
   }
@@ -168,29 +174,21 @@ class Facebook {
     return $this->user;
   }
 
+  public function get_profile_user() {
+    return $this->profile_user;
+  }
+
   public static function current_url() {
     return 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
   }
 
+  // require_add and require_install have been removed.
+  // see http://developer.facebook.com/news.php?blog=1&story=116 for more details
   public function require_login() {
     if ($user = $this->get_loggedin_user()) {
-    	return $user;
+      return $user;
     }
     $this->redirect($this->get_login_url(self::current_url(), $this->in_frame()));
-  }
-
-  public function require_install() {
-    // this was renamed, keeping for compatibility's sake
-    return $this->require_add();
-  }
-
-  public function require_add() {
-    if ($user = $this->get_loggedin_user()) {
-      if ($this->fb_params['added']) {
-        return $user;
-      }
-    }
-    $this->redirect($this->get_add_url(self::current_url()));
   }
 
   public function require_frame() {
@@ -200,7 +198,7 @@ class Facebook {
   }
 
   public static function get_facebook_url($subdomain='www') {
-    return 'http://' . $subdomain . '.facebook.com';
+    return 'http://' . $subdomain . '.new.facebook.com';
   }
 
   public function get_install_url($next=null) {
@@ -343,3 +341,4 @@ class Facebook {
 
 
 }
+
