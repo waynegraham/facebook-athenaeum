@@ -9,11 +9,20 @@
 {/foreach}
 
 <script type="text/javascript">
+
+{if $newProfile}
+var Xoffset = 3;
+var Yoffset = -59;
+{else}
+var Xoffset = 2;
+var Yoffset = -40;
+{/if}
+
 {if $myLoc.floor eq $floor}
 	{literal}
 	document.getElementById("locatorImage").removeClassName("hidden");
-	var locX = {/literal}{$myLoc.x}{literal} + 2;
-	var locY = {/literal}{$myLoc.y}{literal} - 40 + document.getElementById("mapImage").getAbsoluteTop();
+	var locX = {/literal}{$myLoc.x}{literal} + Xoffset;
+	var locY = {/literal}{$myLoc.y}{literal} + Yoffset + document.getElementById("mapImage").getAbsoluteTop();
 	document.getElementById("locatorImage").setStyle({'position': 'absolute', 'left' : locX+'px', 'top': locY+'px'});
 	{/literal}
 {/if}
@@ -30,12 +39,12 @@ function addImage(x, y, friendid){
 	 var a = document.createElement('div');
 	 box.appendChild(a);
 	 
-	 x = x + 2;
-	 y = y - 40 + document.getElementById("mapImage").getAbsoluteTop(); 
+	 x = x + Xoffset;
+	 y = y + Yoffset + document.getElementById("mapImage").getAbsoluteTop(); 
 	 
 	 var flagFriend = '<img src="{/literal}{$callback}{literal}styles/images/flag.png" id="friend_'+friendid+'" style="position:absolute;top:'+y+'px;left:'+x+'px;" />';
 	
-	 box.setInnerXHTML(flagFriend);
+	 a.setInnerXHTML(flagFriend);
 	 document.getElementById('friend_'+friendid).addEventListener('mouseover', showUser, false);
 	
 	//  Uncomment the following line to have the friends picture dissapear when you move the mouse off of their flag.
@@ -59,9 +68,9 @@ function showPosition(e) {
 	var y = e.pageY - document.getElementById("mapImage").getAbsoluteTop();
 	ajax.requireLogin = true;
 	var queryParams = {"floor" : {/literal}{$floor}{literal}, "x" : x, "y" : y, "oldfloor": {/literal}{$myLoc.floor}{literal} };
-	var adjY = e.pageY - 40;
-	var adjX = x + 2;
 	ajax.post('{/literal}{$callback}/setLocation{literal}', queryParams);
+	var adjY = e.pageY + Yoffset;
+	var adjX = x + Xoffset;
 	document.getElementById("banner").setInnerFBML(setBanner);
 	document.getElementById("locatorImage").removeClassName("hidden");
 	document.getElementById("locatorImage").setStyle({'position': 'absolute', 'left' : adjX+'px', 'top': adjY+'px'});
@@ -87,16 +96,19 @@ if(document.getElementById("clearLocation")){
 {/literal}
 
 </script>
-<div id="troubleshoot"></div>
+<div id="floors">
 {foreach from=$maps item=map key=key name=props}
 	{if $floor neq $key}
 		<a href="/{$canvas}/FriendLocator/f{$key}">
 	{/if}
 	{$map.name}{if $floor neq $key}</a>&nbsp;&nbsp;{else}&nbsp;&nbsp;{/if}
-	{if not $smarty.foreach.props.last}
-		|&nbsp;&nbsp;
-	{/if}
+	{if not $smarty.foreach.props.last}|&nbsp;&nbsp;{/if}
 {/foreach}
+
+</div>
+<div id="addProfile">
+	<fb:add-section-button section="profile" />
+</div>
 
 <br /><br />
 <div id="friends"></div>
@@ -107,3 +119,4 @@ if(document.getElementById("clearLocation")){
 	<div id="clearLocation">{if $myLoc.floor eq $floor}<img src="{$callback}styles/images/stop.png">Clear My Location{/if}</div>
 </div>
 {include file="footer.tpl"}
+

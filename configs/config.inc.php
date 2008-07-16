@@ -122,9 +122,18 @@ define('FBTOOLS_DIR', $APP_DIR);
 $GOOGLE_ANALYTICS_KEY = 'UA-nnnnnnn-n';
 
 /*
- * In production set this to 0 rather than 1 to supress any possible PHP errors
+ * In production set this to false to supress any PHP errors.
  */
-//ini_set('display_errors', 1);
-//error_reporting(E_ALL);
+$REPORT_ERRORS = true;
+
+/*
+ * DO NOT EDIT BELOW THIS LINE
+ */
+
+ini_set('display_errors', $report_errors);
+error_reporting(E_ALL);
+
+?>
+
 
 ?>

@@ -12,7 +12,6 @@ class FBAthenaeum {
 	var $tpl 	= null;
 	var $error 	= null;
 	var $facebook = null;
-	var $uid = null;
 	
 	function FBAthenaeum(){
 		$this->sql =& new FBTools_SQL;
@@ -25,9 +24,21 @@ class FBAthenaeum {
 	 * be available to the templates. 
 	 */
 	function requireFacebook(){
-		$this->uid = $this->facebook->require_login();
+		$this->facebook->require_login();
 		$this->facebook->require_frame();
-		$this->tpl->assign('uid', $this->uid);
+		
+		/*
+		 * When the facebook stops sending the fb_sig_in_new_facebook parameter
+		 * this section, and the FriendLocator.tpl templates will need to be 
+		 * updated.
+		 */
+		
+		if(isset($_POST['fb_sig_in_new_facebook']) && $_POST['fb_sig_in_new_facebook'] == 1)
+			$this->tpl->assign('newProfile', true);
+		else
+			$this->tpl->assign('newProfile', false);
+		
+		$this->tpl->assign('uid', $this->facebook->user);
 		$this->tpl->assign('uacct', $GLOBALS['GOOGLE_ANALYTICS_KEY']);
 		$this->tpl->assign('canvas', $GLOBALS['facebook_config']['canvas_url_end']);
 		$this->tpl->assign('tabsMenu', $GLOBALS['facebook_tabs']);
@@ -42,7 +53,7 @@ class FBAthenaeum {
 	{
 		$this->requireFacebook();
 		$this->sql->query(
-			"SELECT uid FROM locations WHERE uid=".$this->uid.";",
+			"SELECT uid FROM locations WHERE uid=".$this->facebook->user.";",
 			SQL_INIT,
 			SQL_ASSOC
 		);
@@ -50,8 +61,11 @@ class FBAthenaeum {
 		if(empty($this->sql->record))
 		{
 			$this->sql->query(
-			"INSERT INTO locations SET uid=".$this->uid.";"
+			"INSERT INTO locations SET uid=".$this->facebook->user.";"
 			);
+			$FBML = "<fb:subtitle>My Location</fb:subtitle>";
+			$FBML .= $GLOBALS['NOT_HERE_MESSAGE'];
+			$this->facebook->api_client->profile_setFBML(null, $this->facebook->user, null, $FBML, $FBML, $FBML);
 		}
 	}
 	
@@ -72,7 +86,7 @@ class FBAthenaeum {
 	function getMyLocation()
 	{
 		$query = "SELECT floor,x,y FROM locations 
-					WHERE uid=".$this->uid." AND 
+					WHERE uid=".$this->facebook->user." AND 
 					updated >= (DATE_ADD(NOW(), INTERVAL -".$GLOBALS['LOCATION_VALID_TIME']." HOUR));";
 		$this->sql->query($query, SQL_INIT, SQL_ASSOC);
 		
@@ -92,13 +106,13 @@ class FBAthenaeum {
 				$query_string .= " OR uid=".$friend;
 			}
 		}
-		$query_string .= ") AND updated >= (DATE_ADD(NOW(), INTERVAL -".$GLOBALS['LOCATION_VALID_TIME']." HOUR)) AND NOT uid=".$this->uid.";";		
+		$query_string .= ") AND updated >= (DATE_ADD(NOW(), INTERVAL -".$GLOBALS['LOCATION_VALID_TIME']." HOUR)) AND NOT uid=".$this->facebook->user.";";		
 		
 		$this->sql->query(
 			$query_string,
 			SQL_ALL,
 			SQL_ASSOC
-		);
+		) or die(mysql_error());
 		
 		return $this->sql->record;
 	}
@@ -116,7 +130,7 @@ class FBAthenaeum {
 			(int)$formvars['x'], 
 			(int)$formvars['y'], 
 			(int)$formvars['floor'],
-			(int)$formvars['fb_sig_user']
+			$this->facebook->user
 		);
 		
 		if($formvars['oldfloor'] != $formvars['floor'])
@@ -124,7 +138,6 @@ class FBAthenaeum {
 			$FBML = "<fb:subtitle>My Location</fb:subtitle>";
 			$FBML .= $GLOBALS['Floor_Map'][$formvars['floor']]['message'];
 			$this->facebook->api_client->profile_setFBML(null, $this->facebook->user, null, $FBML, $FBML, $FBML);
-			
 		}
 		
 		return $this->sql->query($_query);
@@ -136,6 +149,9 @@ class FBAthenaeum {
 	function clearLocation($uid)
 	{
 		$query = "UPDATE locations SET updated=0 WHERE uid=".$uid.";";
+		$FBML = "<fb:subtitle>My Location</fb:subtitle>";
+		$FBML .= $GLOBALS['NOT_HERE_MESSAGE'];
+		$this->facebook->api_client->profile_setFBML(null, $this->facebook->user, null, $FBML, $FBML, $FBML);
 		return $this->sql->query($query) or die(mysql_error() );
 	}
 	
@@ -215,3 +231,4 @@ class FBAthenaeum {
 	}
 }
 ?>
+

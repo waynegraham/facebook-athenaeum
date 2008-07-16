@@ -72,4 +72,12 @@ img.hidden {
 #banner img{
 	margin: -3px 5px 0px 5px;
 	float: left;
-}	}
+}
+
+#floors {
+	float: left;
+}
+
+#addProfile {
+	float: right;
+}	
