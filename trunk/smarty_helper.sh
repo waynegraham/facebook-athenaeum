@@ -10,20 +10,34 @@
 # SMARTYDIR
 # 	Directory to store Smarty
 #
+# SMARTY_VER
+#   Current version of Smarty (just the filename)
+#
 # $Id$
 #
 
 PHPDIR=`pear config-get php_dir`
 SMARTYDIR="$PHPDIR/Smarty"
+SMARTY_VER="Smarty-2.6.20"
+
 if [ ! -d $SMARTYDIR ]
 then
-    wget http://www.smarty.net/do_download.php?download_file=Smarty-2.6.20.tar.gz
-    tar -zxf Smarty-2.6.20.tar.gz
+    echo "Downloading Smarty..."
+    wget http://www.smarty.net/do_download.php?download_file=$SMARTY_VER.tar.gz
+    
+    echo "Extracting Smarty"
+    tar -zxf $SMARTY_VER.tar.gz
     mkdir $SMARTYDIR
-    mv Smarty-2.6.20/libs/* $SMARTYDIR
-    rm Smarty-2.6.20.tar.gz
-    rm -rf Smarty-2.6.20
+    
+    echo "Moving Smarty to $SMARTYDIR"
+    mv $SMARTY_VER/libs/* $SMARTYDIR
+    
+    echo "Cleaning up..."
+    rm $SMARTY_VER.tar.gz
+    rm -rf $SMARTY_VER
 fi
+
+echo "Updating PEAR packages//"
 
 ## Install PEAR packages
 pear upgrade pear
