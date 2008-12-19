@@ -27,17 +27,6 @@ class FBAthenaeum {
 		$this->facebook->require_login();
 		$this->facebook->require_frame();
 		
-		/*
-		 * When the facebook stops sending the fb_sig_in_new_facebook parameter
-		 * this section, and the FriendLocator.tpl templates will need to be 
-		 * updated.
-		 */
-		
-		if(isset($_POST['fb_sig_in_new_facebook']) && $_POST['fb_sig_in_new_facebook'] == 1)
-			$this->tpl->assign('newProfile', true);
-		else
-			$this->tpl->assign('newProfile', false);
-		
 		$this->tpl->assign('uid', $this->facebook->user);
 		$this->tpl->assign('uacct', $GLOBALS['GOOGLE_ANALYTICS_KEY']);
 		$this->tpl->assign('canvas', $GLOBALS['facebook_config']['canvas_url_end']);
