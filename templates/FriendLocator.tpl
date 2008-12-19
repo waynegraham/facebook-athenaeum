@@ -10,13 +10,8 @@
 
 <script type="text/javascript">
 
-{if $newProfile}
 var Xoffset = 3;
-var Yoffset = -59;
-{else}
-var Xoffset = 2;
-var Yoffset = -40;
-{/if}
+var Yoffset = -57;
 
 {if $myLoc.floor eq $floor}
 	{literal}
