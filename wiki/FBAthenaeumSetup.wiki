@@ -48,9 +48,9 @@ To hide any tabs you don't wish to use, simply comment out the lines you don't w
 === Google Analytics ===
 You can easily add a [http://www.google.com/analytics/ Google Analytics key] to track the usage of your application. 
 
-= Details =
+=== Configure Administrators ===
+Any Administrator can edit the hours page using their Facebook account.  In order for them to edit the page, you will need to find their Facebook ID.  The ID can be found in the URL for any profile page.
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+{{{http://www.facebook.com/profile.php?id=#######}}}
+
+The ID number does not have a set length, so be sure and copy all of the digits.
