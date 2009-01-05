@@ -27,6 +27,12 @@ class FBAthenaeum {
 		$this->facebook->require_login();
 		$this->facebook->require_frame();
 		
+		/*
+		 * When the facebook stops sending the fb_sig_in_new_facebook parameter
+		 * this section, and the FriendLocator.tpl templates will need to be 
+		 * updated.
+		 */
+		
 		$this->tpl->assign('uid', $this->facebook->user);
 		$this->tpl->assign('uacct', $GLOBALS['GOOGLE_ANALYTICS_KEY']);
 		$this->tpl->assign('canvas', $GLOBALS['facebook_config']['canvas_url_end']);
@@ -122,6 +128,8 @@ class FBAthenaeum {
 			$this->facebook->user
 		);
 		
+		
+		
 		if($formvars['oldfloor'] != $formvars['floor'])
 		{
 			$FBML = "<fb:subtitle>My Location</fb:subtitle>";
@@ -172,8 +180,25 @@ class FBAthenaeum {
 	 *
 	 */
 	function displayHours($data = array()){
+		$admin = $this->isAdmin();
+		$this->tpl->assign('admin', $admin);
 		$this->requireFacebook();
 		$this->tpl->display('Hours.tpl');
+	}
+	
+	/**
+	* Determine if the user logged in is an Administrator or not.
+	*/	
+	function isAdmin(){
+	$admin = 0;
+		foreach($GLOBALS['ADMINS'] as $pid){
+			if($pid == $this->facebook->user){
+				$admin = 1;
+			}
+			if($admin == 1)
+			return $admin;
+		}
+		return 0;
 	}
 	
 	/**
@@ -218,6 +243,19 @@ class FBAthenaeum {
 		$this->tpl->assign("results", $searchResults);
 		$this->tpl->display('searchResults.tpl');
 	}
+	
+	function writeHours($data){
+		if($this->isAdmin()){
+			$replace = array("\r\n", "\n", "\r");
+			$string = str_replace($replace, "<br />", $data);
+			$file = $this->tpl->template_dir."/hourData.tpl";
+			echo $string;
+			if(is_writeable($file)){
+				file_put_contents($file, $string);	
+			}
+		}
+	}
 }
 ?>
+
 
