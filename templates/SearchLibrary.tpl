@@ -32,7 +32,6 @@
 				{/rss}
 			</div>
 			<div id="resultRight">
-				<h3>Today's Hours</h3>
 			</div>
 		</div>
 </div>

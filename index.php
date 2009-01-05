@@ -35,6 +35,9 @@ switch($_action){
 	case 'News':
 		$fbtools->displayNews();
 		break;
+	case 'writeHours':
+		$fbtools->writeHours($_REQUEST['hours']);
+		break;
 	case 'SearchLibrary':
 	default:
 		$fbtools->displaySearchLibrary();
@@ -43,3 +46,4 @@ switch($_action){
 
 
 ?>
+

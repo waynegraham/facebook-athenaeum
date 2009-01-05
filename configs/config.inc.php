@@ -121,6 +121,18 @@ define('FBTOOLS_DIR', $APP_DIR);
  */
 $GOOGLE_ANALYTICS_KEY = 'UA-nnnnnnn-n';
 
+
+/*
+ * An array with the Facebook IDs of all of the admin users of the application.
+ * The two listed below are non-working IDs, and are here for example only.
+ * Be sure and delete them and put your own Facebook ID here.  It can be found in the URL of
+ * your profile page.    http://www.facebook.com/profile.php?id=#######
+ */
+$ADMINS = array(
+	0000001, 
+	0000002
+);
+
 /*
  * In production set this to "0" to supress any PHP errors.
  */
