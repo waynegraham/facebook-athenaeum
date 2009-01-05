@@ -246,10 +246,8 @@ class FBAthenaeum {
 	
 	function writeHours($data){
 		if($this->isAdmin()){
-			$replace = array("\r\n", "\n", "\r");
-			$string = str_replace($replace, "<br />", $data);
+			$string = nl2br($data);
 			$file = $this->tpl->template_dir."/hourData.tpl";
-			echo $string;
 			if(is_writeable($file)){
 				file_put_contents($file, $string);	
 			}
