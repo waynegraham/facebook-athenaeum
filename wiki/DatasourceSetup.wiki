@@ -3,9 +3,11 @@
 
 = Introduction =
 
-The application uses a simple table structure that is easily ported to any relational database system that is supported by the DB package (including MySQL, MSSQL, Oracle, SQLite, Sybase, and PostgreSQL). While the included SQL script is for MySQL, you can easily recreate this table in any other language. In the future we will be adding support for Facebook DataStore API so you will have the option to use Facebook to store this data.
+The application uses a simple table structure that is easily ported to any relational database system that is supported by the DB package (including MySQL, MSSQL, Oracle, SQLite, Sybase, and PostgreSQL). While the included SQL script is for MySQL, you can easily recreate this table in any other language. 
 
-In the libs folder of the application, there is an SQL script to create a table for your application. We've included a helper script for MySQL (mysql_helper.sh) to assist you in creating the datasource and setting up a user for the database. You will need to remember this information to add in the configs/config.inc.php file.
+In the libs folder of the application, there is an SQL script to create a table for your application. We've included a helper script for MySQL (mysql_helper.sh) to assist you in creating the datasource and setting up a user for the database. You will need to remember this information to add in the configs/config.inc.php file.  
+
+If you need (or want) to use an existing database, there is no need to run this script.
 
 {{{
 $> cd PATH_TO_APPLICATION
@@ -27,6 +29,8 @@ CREATE TABLES locations(
 )
 GO
 }}}
+
+If you need to use table prefixes be sure and adjust the script above accordingly.  You will also need to make the adjustment in config.inc.php.
 
 = Other Pages =
   * [ServerSetup Set up web server]
