@@ -45,6 +45,12 @@ $dsn_config['password'] = 'MYSQL_PASSWORD';
 $dsn_config['database'] = 'fbathenaeum';
 
 /**
+ * A table prefix can only be used if the tables are manually created.
+ * A basic SQL script is located in libs/mysql.sql
+ */
+$dsn_config['table_prefix'] = ''; 
+
+/**
  * Facebook Athenaeum customizations
  */
 $APP_NAME = 'Facebook Athenaeum';
