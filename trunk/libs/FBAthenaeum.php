@@ -3,7 +3,7 @@
  * Project: Facebook Athenaeum
  * Date: $Date$
  * File: FBAthenaeum.php
- * Version: $Id$
+ * Version: $Id
  * 
  */
 
@@ -13,11 +13,15 @@ class FBAthenaeum {
 	var $error 	= null;
 	var $facebook = null;
 	
+	
 	function FBAthenaeum(){
 		$this->sql =& new FBTools_SQL;
 		$this->tpl =& new FBTools_Smarty;
 		$this->facebook =& new FBTools_FB();
+		$this->tblPrefix = $GLOBALS['dsn_config']['table_prefix'];
 	}
+
+	
 	/**
 	 * Require that the user be logged into facebook and on a canvas page
 	 * then define the application name and callback URL so that it will 
@@ -41,14 +45,15 @@ class FBAthenaeum {
 		$this->tpl->assign('callback', $GLOBALS['facebook_config']['callback_url']);
 	}
 	
-	/*
-	 * Create a line in the database for the user so that they can set locations
+
+	/**
+	 * If a user is not already in the database, then create an entry so that everything else always works right
 	 */
 	function installIfNeeeded()
 	{
 		$this->requireFacebook();
 		$this->sql->query(
-			"SELECT uid FROM locations WHERE uid=".$this->facebook->user.";",
+			"SELECT uid FROM ".$this->tblPrefix."locations WHERE uid=".$this->facebook->user.";",
 			SQL_INIT,
 			SQL_ASSOC
 		);
@@ -56,7 +61,7 @@ class FBAthenaeum {
 		if(empty($this->sql->record))
 		{
 			$this->sql->query(
-			"INSERT INTO locations SET uid=".$this->facebook->user.";"
+			"INSERT INTO ".$this->tblPrefix."locations SET uid=".$this->facebook->user.";"
 			);
 			$FBML = "<fb:subtitle>My Location</fb:subtitle>";
 			$FBML .= $GLOBALS['NOT_HERE_MESSAGE'];
@@ -64,9 +69,9 @@ class FBAthenaeum {
 		}
 	}
 	
+
 	/**
-	 * Display the search library page
-	 * Usually doubles as the homepage
+	 * Display the search library page.  The page usually doubles as the homepage
 	 *
 	 */
 	function displaySearchLibrary(){
@@ -75,26 +80,33 @@ class FBAthenaeum {
 		$this->tpl->assign('RSSFeed', $GLOBALS['FEED_URL']);
 		$this->tpl->display('SearchLibrary.tpl');
 	}
-/*
-	 * Return the user's current location
+	
+
+	/**
+	 * Find the location of the currently logged in user.
+	 * 
+	 * @return An array containing the current floor and x-y coordinates of the currently logged in user.
 	 */
 	function getMyLocation()
 	{
-		$query = "SELECT floor,x,y FROM locations 
+		$query = "SELECT floor,x,y FROM ".$this->tblPrefix."locations 
 					WHERE uid=".$this->facebook->user." AND 
 					updated >= (DATE_ADD(NOW(), INTERVAL -".$GLOBALS['LOCATION_VALID_TIME']." HOUR));";
 		$this->sql->query($query, SQL_INIT, SQL_ASSOC);
 		
 		return $this->sql->record;
 	}
+
+
 	/**
 	 * Return the locations for friends
 	 *
-	 * @param unknown_type $friends
-	 * @return unknown
+	 * @param array $friends An array listing all of a users friends that have the application installed
+	 * @param integer $floor What floor you are checking for users on.
+	 * @return An array of location records for the given floor.  A location record contains the users' UID, and x-y coordinates
 	 */
 	function getLocations($friends = array(), $floor){
-		$query_string = "SELECT uid, x, y FROM locations WHERE floor=".$floor." AND (1=0";
+		$query_string = "SELECT uid, x, y FROM ".$this->tblPrefix."locations WHERE floor=".$floor." AND (1=0";
 		if($friends != ""){
 			foreach($friends as $friend)
 			{
@@ -112,14 +124,15 @@ class FBAthenaeum {
 		return $this->sql->record;
 	}
 	
+	
 	/**
-	 * Add a location to the database
+	 * Update a location in the database
 	 *
-	 * @param array $formvars
+	 * @param array $formvars The form variables that are passed from the AJAX on the map page.
 	 */
 	function updateLocation($formvars){
 		$_query = sprintf(
-			"UPDATE locations SET
+			"UPDATE ".$this->tblPrefix."locations SET
 			x= %d, y=%d, floor=%d, updated=NOW()
 			WHERE uid=%d;", 
 			(int)$formvars['x'], 
@@ -140,32 +153,40 @@ class FBAthenaeum {
 		return $this->sql->query($_query);
 	}
 	
-	/*
+	
+	/**
 	 * Clears a location by setting the date stamp to the unix epoch.
+	 * 
+	 * @param The UID of the user who's location is to be cleared.
 	 */
 	function clearLocation($uid)
 	{
-		$query = "UPDATE locations SET updated=0 WHERE uid=".$uid.";";
+		$query = "UPDATE ".$this->tblPrefix."locations SET updated=0 WHERE uid=".$uid.";";
 		$FBML = "<fb:subtitle>My Location</fb:subtitle>";
 		$FBML .= $GLOBALS['NOT_HERE_MESSAGE'];
 		$this->facebook->api_client->profile_setFBML(null, $this->facebook->user, null, $FBML, $FBML, $FBML);
 		return $this->sql->query($query) or die(mysql_error() );
 	}
 	
-	/*
+
+	/**
 	 * Display the friend locator.
+	 * 
+	 * @param The floor that is to be displayed
 	 */
 	function displayFriendLocator($floor = null)
 	{
-		if(!isset($floor['f']))
-			$floor = $GLOBALS['DEFAULT_FLOOR'];
-		else
-			$floor = $floor['f'];
-			
 		$currentLoc = $this->getMyLocation();
 		if(!isset($currentLoc['floor']))
 			$currentLoc['floor'] = -1;
-		
+			
+		if(!isset($floor['f']) && $currentLoc['floor'] == -1)
+			$floor = $GLOBALS['DEFAULT_FLOOR'];
+		else if(!isset($floor['f']))
+			$floor = $currentLoc['floor'];
+		else
+			$floor = $floor['f'];
+			
 		$this->tpl->assign('myLoc', $currentLoc);
 		$this->tpl->assign('floor', $floor);
 		$this->tpl->assign('maps', $GLOBALS['Floor_Map']);
@@ -175,20 +196,24 @@ class FBAthenaeum {
 		$this->tpl->display('FriendLocator.tpl');
 	}
 	
+
 	/**
 	 * Display the hours 
 	 *
 	 */
-	function displayHours($data = array()){
+	function displayHours(){
 		$admin = $this->isAdmin();
 		$this->tpl->assign('admin', $admin);
 		$this->requireFacebook();
 		$this->tpl->display('Hours.tpl');
 	}
 	
+
 	/**
-	* Determine if the user logged in is an Administrator or not.
-	*/	
+	 * Determine if a given user is an Administrator or not
+	 *
+	 * @return 1 if the user is an Administrator, 0 otherwise
+	 */
 	function isAdmin(){
 	$admin = 0;
 		foreach($GLOBALS['ADMINS'] as $pid){
@@ -201,6 +226,7 @@ class FBAthenaeum {
 		return 0;
 	}
 	
+
 	/**
 	 * Display RSS news
 	 *
@@ -211,6 +237,7 @@ class FBAthenaeum {
 		$this->tpl->display('News.tpl');
 	}
 	
+
 	/**
 	 * Searches the Google appliance then displays the results.
 	 * Designed to output only using Facebook's mock AJAX
@@ -244,6 +271,13 @@ class FBAthenaeum {
 		$this->tpl->display('searchResults.tpl');
 	}
 	
+	
+	/**
+	 * Write the hours template to a file.  If the file exists before this function
+	 * is run then the PHP/Webserver user must have read/write access
+	 * 
+	 * @param string $data What is going to be written to the file.  New lines will be converted to HTML line breaks
+	 */
 	function writeHours($data){
 		if($this->isAdmin()){
 			$string = nl2br($data);
