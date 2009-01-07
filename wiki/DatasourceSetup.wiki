@@ -20,7 +20,7 @@ This script will prompt you for a database name, a database user for the databas
 The following is an ANSI-SQL script that _should_ work on most RDBMS systems:
 
 {{{
-CREATE TABLES locations(
+CREATE TABLE locations(
     uid INT PRIMARY KEY NONCLUSTERED,
     x INT NOT NULL,
     y INT NOT NULL,
