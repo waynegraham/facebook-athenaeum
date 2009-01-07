@@ -21,7 +21,7 @@ The following is an ANSI-SQL script that _should_ work on most RDBMS systems:
 
 {{{
 CREATE TABLE locations(
-    uid INT PRIMARY KEY NONCLUSTERED,
+    uid BIGINT PRIMARY KEY NONCLUSTERED,
     x INT NOT NULL,
     y INT NOT NULL,
     floor INT NOT NULL,
@@ -31,6 +31,8 @@ GO
 }}}
 
 If you need to use table prefixes be sure and adjust the script above accordingly.  You will also need to make the adjustment in config.inc.php.
+
+In order to guarantee that the data Facebook sends will be stored correctly, the _uid_ column should be capable of storing 64-bit integers.
 
 = Other Pages =
   * [ServerSetup Set up web server]
