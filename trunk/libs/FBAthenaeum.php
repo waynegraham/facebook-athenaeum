@@ -3,7 +3,7 @@
  * Project: Facebook Athenaeum
  * Date: $Date$
  * File: FBAthenaeum.php
- * Version: $Id
+ * Version: $Id$
  * 
  */
 
@@ -14,7 +14,7 @@ class FBAthenaeum {
 	var $facebook = null;
 	
 	
-	function FBAthenaeum(){
+	function __construct(){
 		$this->sql =& new FBTools_SQL;
 		$this->tpl =& new FBTools_Smarty;
 		$this->facebook =& new FBTools_FB();
@@ -141,13 +141,23 @@ class FBAthenaeum {
 			$this->facebook->user
 		);
 		
+		//if($formvars['oldfloor'] != $formvars['floor'])
 		
+		$oldLoc = $this->getMyLocation();
 		
-		if($formvars['oldfloor'] != $formvars['floor'])
+		if(!isset($oldLoc['floor']) || (isset($oldLoc['floor']) && $oldLoc['floor'] != $formvars['floor']))
 		{
 			$FBML = "<fb:subtitle>My Location</fb:subtitle>";
 			$FBML .= $GLOBALS['Floor_Map'][$formvars['floor']]['message'];
 			$this->facebook->api_client->profile_setFBML(null, $this->facebook->user, null, $FBML, $FBML, $FBML);
+			if($GLOBALS['PUBLISH_FEED'] && !file_exists($this->tpl->config_dir."/feedConf.inc.php") && $this->isAdmin()){
+				$this->registerFeedTemplate();
+			}
+			if($GLOBALS['PUBLISH_FEED'] && file_exists($this->tpl->config_dir."/feedConf.inc.php")){
+				include_once($this->tpl->config_dir."/feedConf.inc.php");
+				$action = array('message' => $GLOBALS['Floor_Map'][$formvars['floor']]['feed'], 'floor_id'=>$formvars['floor']);
+				$this->facebook->api_client->feed_publishUserAction($TEMPLATE_ID, json_encode($action));	
+			}
 		}
 		
 		return $this->sql->query($_query);
@@ -218,10 +228,8 @@ class FBAthenaeum {
 	$admin = 0;
 		foreach($GLOBALS['ADMINS'] as $pid){
 			if($pid == $this->facebook->user){
-				$admin = 1;
+				return 1;
 			}
-			if($admin == 1)
-			return $admin;
 		}
 		return 0;
 	}
@@ -282,12 +290,33 @@ class FBAthenaeum {
 		if($this->isAdmin()){
 			$string = nl2br($data);
 			$file = $this->tpl->template_dir."/hourData.tpl";
-			if(is_writeable($file)){
+			if(is_writable($file)){
 				file_put_contents($file, $string);	
+			}
+		}
+	}
+	
+	
+	/**
+	 * Registers a feed template if it hasn't been done already
+	 */
+	function registerFeedTemplate(){
+		if($this->isAdmin()){
+			$file = $this->tpl->config_dir."/feedConf.inc.php";
+			if(file_exists($file)){
+				return 2;
+			} else {
+				$feeds = array();
+				$feeds[] = '{*actor*} {*message*}';
+				$links = array(array('text' => 'View Map', 'href' => 'http://apps.facebook.com/'.$GLOBALS['facebook_config']['canvas_url_end'].'/FriendLocator/f{*floor_id*}'));
+				$feed = $this->facebook->api_client->feed_registerTemplateBundle($feeds, null, null, $links);
+				
+				$data = "<?php\n // This file is generated automatically -- DO NOT EDIT \n ".chr(36)."TEMPLATE_ID = ".$feed.";\n\n ?>";
+				file_put_contents($file, $data);
+				return 1;
 			}
 		}
 	}
 }
 ?>
-
 

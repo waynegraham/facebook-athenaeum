@@ -76,34 +76,43 @@ $SEARCH['CATALOG'] = "";   // Put the URL of your catalog search here.
 
 /*
  * Set each floor's map location and what each floor is called.
- * An example from Swem is included below.
- * The message is what is what will be displayed on the users profile page
- * when that component is finished being developed.
+ * The message element is what is published in a box on the user's homepage if they choose to add it
+ * The feed element is what is appened to the the users name when publishing a story in their mini-feed
+ * The tag <fb:pronoun /> inserts the word "himself" or "herself" based on the user's gender.
  */
 
 $Floor_Map = array(
 	array(
 		'name' => 'Ground Floor',
 		'map' => 'http://swem.wm.edu/images/floor-plans/0.gif',
-		'message' => "I'm currently on the ground floor of Swem."
+		'message' => "I'm currently on the ground floor of Swem.",
+		'feed' => 'mapped <fb:pronoun uid="actor" reflexive="true" useyou="false"/> on the ground floor of Swem'
 	),
 	array(
 		'name' => 'First Floor',
 		'map' => 'http://swem.wm.edu/images/floor-plans/1.gif',
-		'message' => "I'm currently on the first floor of Swem."
+		'message' => "I'm currently on the first floor of Swem.",
+		'feed' => 'mapped <fb:pronoun uid="actor" reflexive="true" useyou="false"/> on the first floor of Swem'
 	),
 	array(
 		'name' => 'Second Floor',
 		'map' => 'http://swem.wm.edu/images/floor-plans/2.gif',	
-		'message' => "I'm currently on the second floor of Swem."
+		'message' => "I'm currently on the second floor of Swem.",
+		'feed' => 'mapped <fb:pronoun uid="actor" reflexive="true" useyou="false"/> on the second floor of Swem'
 	),
 	array(
 		'name' => 'Third Floor',
 		'map' => 'http://swem.wm.edu/images/floor-plans/3.gif',
-		'message' => "I'm currently on the third floor of Swem."
+		'message' => "I'm currently on the third floor of Swem.",
+		'feed' => 'mapped <fb:pronoun uid="actor" reflexive="true" useyou="false"/> on the third floor of Swem'
 	)
 	);
-
+	
+/*
+ * Set as a 1 to enable publishing stories on a the users mini-feed, otherwise this should be set to 0
+ * Before this can work, someone that is listed as an admin below must first set their location.
+ */
+$PUBLISH_FEED = 1;
 
 /*
  * Set the floor that the Friend Locator defaults to when there is no floor specified by the user.
@@ -114,7 +123,6 @@ $DEFAULT_FLOOR = 1;
 
 /*
  * Determine how long (in hours) a set location is good for.
- * TODO: Create an option so that a location is ignored after the library closes.
  */
 $LOCATION_VALID_TIME = 24;
 
