@@ -150,14 +150,8 @@ class FBAthenaeum {
 			$FBML = "<fb:subtitle>My Location</fb:subtitle>";
 			$FBML .= $GLOBALS['Floor_Map'][$formvars['floor']]['message'];
 			$this->facebook->api_client->profile_setFBML(null, $this->facebook->user, null, $FBML, $FBML, $FBML);
-			if($GLOBALS['PUBLISH_FEED'] && !file_exists($this->tpl->config_dir."/feedConf.inc.php") && $this->isAdmin()){
-				$this->registerFeedTemplate();
-			}
-			if($GLOBALS['PUBLISH_FEED'] && file_exists($this->tpl->config_dir."/feedConf.inc.php")){
-				include_once($this->tpl->config_dir."/feedConf.inc.php");
-				$action = array('message' => $GLOBALS['Floor_Map'][$formvars['floor']]['feed'], 'floor_id'=>$formvars['floor']);
-				$this->facebook->api_client->feed_publishUserAction($TEMPLATE_ID, json_encode($action));	
-			}
+			$action = array('message' => $GLOBALS['Floor_Map'][$formvars['floor']]['feed'], 'floor_id'=>$formvars['floor']);
+			$this->facebook->api_client->feed_publishUserAction($TEMPLATE_ID, json_encode($action));	
 		}
 		
 		return $this->sql->query($_query);
@@ -197,6 +191,8 @@ class FBAthenaeum {
 		else
 			$floor = $floor['f'];
 			
+		$this->tpl->assign('shortName', $GLOBALS['SHORT_NAME']);
+		$this->tpl->assign('imageURL', $GLOBALS['Small_Logo']);
 		$this->tpl->assign('myLoc', $currentLoc);
 		$this->tpl->assign('floor', $floor);
 		$this->tpl->assign('maps', $GLOBALS['Floor_Map']);
@@ -292,28 +288,6 @@ class FBAthenaeum {
 			$file = $this->tpl->template_dir."/hourData.tpl";
 			if(is_writable($file)){
 				file_put_contents($file, $string);	
-			}
-		}
-	}
-	
-	
-	/**
-	 * Registers a feed template if it hasn't been done already
-	 */
-	function registerFeedTemplate(){
-		if($this->isAdmin()){
-			$file = $this->tpl->config_dir."/feedConf.inc.php";
-			if(file_exists($file)){
-				return 2;
-			} else {
-				$feeds = array();
-				$feeds[] = '{*actor*} {*message*}';
-				$links = array(array('text' => 'View Map', 'href' => 'http://apps.facebook.com/'.$GLOBALS['facebook_config']['canvas_url_end'].'/FriendLocator/f{*floor_id*}'));
-				$feed = $this->facebook->api_client->feed_registerTemplateBundle($feeds, null, null, $links);
-				
-				$data = "<?php\n // This file is generated automatically -- DO NOT EDIT \n ".chr(36)."TEMPLATE_ID = ".$feed.";\n\n ?>";
-				file_put_contents($file, $data);
-				return 1;
 			}
 		}
 	}

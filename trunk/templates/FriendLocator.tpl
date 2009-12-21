@@ -66,6 +66,11 @@ function showPosition(e) {
 	ajax.post('{/literal}{$callback}/setLocation{literal}', queryParams);
 	var adjY = e.pageY + Yoffset;
 	var adjX = x + Xoffset;
+	
+	var attach = {'caption':'{*actor*} shared a location in {/literal}{$shortName}{literal}.','media':[{'type':'image','src':'{/literal}{$imageURL}{literal}','href':'http://apps.facebook.com/swemtools/'}]};
+
+    Facebook.streamPublish('', attach);
+	
 	document.getElementById("banner").setInnerFBML(setBanner);
 	document.getElementById("locatorImage").removeClassName("hidden");
 	document.getElementById("locatorImage").setStyle({'position': 'absolute', 'left' : adjX+'px', 'top': adjY+'px'});
