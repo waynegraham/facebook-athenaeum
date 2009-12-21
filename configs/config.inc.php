@@ -74,7 +74,7 @@ $SEARCH['DATABASE'] = "";  // Put the URL of your database search here.
 $SEARCH['CATALOG'] = "";   // Put the URL of your catalog search here.
 
 
-/*
+/**
  * Set each floor's map location and what each floor is called.
  * The message element is what is published in a box on the user's homepage if they choose to add it
  * The feed element is what is appened to the the users name when publishing a story in their mini-feed
@@ -85,30 +85,36 @@ $Floor_Map = array(
 	array(
 		'name' => 'Ground Floor',
 		'map' => 'http://swem.wm.edu/images/floor-plans/0.gif',
-		'message' => "I'm currently on the ground floor of Swem.",
-		'feed' => 'mapped <fb:pronoun uid="actor" reflexive="true" useyou="false"/> on the ground floor of Swem'
+		'message' => "I'm currently on the ground floor of Swem."
 	),
 	array(
 		'name' => 'First Floor',
 		'map' => 'http://swem.wm.edu/images/floor-plans/1.gif',
-		'message' => "I'm currently on the first floor of Swem.",
-		'feed' => 'mapped <fb:pronoun uid="actor" reflexive="true" useyou="false"/> on the first floor of Swem'
+		'message' => "I'm currently on the first floor of Swem."
 	),
 	array(
 		'name' => 'Second Floor',
 		'map' => 'http://swem.wm.edu/images/floor-plans/2.gif',	
-		'message' => "I'm currently on the second floor of Swem.",
-		'feed' => 'mapped <fb:pronoun uid="actor" reflexive="true" useyou="false"/> on the second floor of Swem'
+		'message' => "I'm currently on the second floor of Swem."
 	),
 	array(
 		'name' => 'Third Floor',
 		'map' => 'http://swem.wm.edu/images/floor-plans/3.gif',
-		'message' => "I'm currently on the third floor of Swem.",
-		'feed' => 'mapped <fb:pronoun uid="actor" reflexive="true" useyou="false"/> on the third floor of Swem'
+		'message' => "I'm currently on the third floor of Swem."
 	)
 	);
 	
-/*
+/**
+ * The short name of the library
+ */
+$SHORT_NAME="Swem";
+	
+/**
+ * The URL to a smaller logo for use in the news feed
+ */
+$Small_Logo = "http://swem.wm.edu/images/windowFB.png";
+	
+/**
  * Set as a 1 to enable publishing stories on a the users mini-feed, otherwise this should be set to 0
  * Before this can work, someone that is listed as an admin below must first set their location.
  */
@@ -136,7 +142,7 @@ define('FBTOOLS_DIR', $APP_DIR);
 $GOOGLE_ANALYTICS_KEY = 'UA-nnnnnnn-n';
 
 
-/*
+/**
  * An array with the Facebook IDs of all of the admin users of the application.
  * The two listed below are non-working IDs, and are here for example only.
  * Be sure and delete them and put your own Facebook ID here.  It can be found in the URL of
@@ -147,19 +153,16 @@ $ADMINS = array(
 	0000002
 );
 
-/*
+/**
  * In production set this to "0" to supress any PHP errors.
  */
 $REPORT_ERRORS = 1;
 
-/*
+/**
  * DO NOT EDIT BELOW THIS LINE
  */
 
 ini_set('display_errors', $report_errors);
 error_reporting(E_ALL);
-
-?>
-
 
 ?>
