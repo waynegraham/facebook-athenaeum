@@ -63,9 +63,6 @@ class FBAthenaeum {
 			$this->sql->query(
 			"INSERT INTO ".$this->tblPrefix."locations SET uid=".$this->facebook->user.";"
 			);
-			$FBML = "<fb:subtitle>My Location</fb:subtitle>";
-			$FBML .= $GLOBALS['NOT_HERE_MESSAGE'];
-			$this->facebook->api_client->profile_setFBML(null, $this->facebook->user, null, $FBML, $FBML, $FBML);
 		}
 	}
 	
@@ -147,11 +144,8 @@ class FBAthenaeum {
 		
 		if(!isset($oldLoc['floor']) || (isset($oldLoc['floor']) && $oldLoc['floor'] != $formvars['floor']))
 		{
-			$FBML = "<fb:subtitle>My Location</fb:subtitle>";
-			$FBML .= $GLOBALS['Floor_Map'][$formvars['floor']]['message'];
-			$this->facebook->api_client->profile_setFBML(null, $this->facebook->user, null, $FBML, $FBML, $FBML);
 			$action = array('message' => $GLOBALS['Floor_Map'][$formvars['floor']]['feed'], 'floor_id'=>$formvars['floor']);
-			$this->facebook->api_client->feed_publishUserAction($TEMPLATE_ID, json_encode($action));	
+		//	$this->facebook->api_client->feed_publishUserAction($TEMPLATE_ID, json_encode($action));	
 		}
 		
 		return $this->sql->query($_query);
@@ -166,9 +160,6 @@ class FBAthenaeum {
 	function clearLocation($uid)
 	{
 		$query = "UPDATE ".$this->tblPrefix."locations SET updated=0 WHERE uid=".$uid.";";
-		$FBML = "<fb:subtitle>My Location</fb:subtitle>";
-		$FBML .= $GLOBALS['NOT_HERE_MESSAGE'];
-		$this->facebook->api_client->profile_setFBML(null, $this->facebook->user, null, $FBML, $FBML, $FBML);
 		return $this->sql->query($query) or die(mysql_error() );
 	}
 	
